@@ -184,9 +184,21 @@ students
 ### 2.6
 将题2.5中的数据表2.3的数据写成一个纯文本文件,用函数read.table()读该文件,然后再用函数write.csv()写成一个能用Excel表打开的文件,并用Excel表打开.
 
+```r
+students_loaded <- read.table("students.data", header = T)
+students_loaded
+```
 
+```
+##   姓名 性别 年龄 身高 体重
+## 1 张三   女   14  156 42.0
+## 2 李四   男   15  165 49.0
+## 3 王五   女   16  157 41.5
+## 4 赵六   男   14  162 52.0
+## 5 丁一   女   15  159 45.5
+```
 
-
-
-
+```r
+write.csv(students_loaded, file = "students.csv")
+```
 

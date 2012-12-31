@@ -80,10 +80,7 @@ students
 ### 2.6
 将题2.5中的数据表2.3的数据写成一个纯文本文件,用函数read.table()读该文件,然后再用函数write.csv()写成一个能用Excel表打开的文件,并用Excel表打开.
 ```{r}
-
+students_loaded <- read.table("students.data", header=T)
+students_loaded
+write.csv(students_loaded, file='students.csv')
 ```
-
-
-
-
-
