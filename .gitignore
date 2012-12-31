@@ -1,1 +1,8 @@
 *.mp4
+
+# History files
+.Rhistory
+.Rproj.user
+
+# Example code in package build process
+*-Ex.R
