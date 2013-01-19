@@ -1,0 +1,106 @@
+Week 3 Homework
+==============
+## 书面作业
+### 3.1
+某单位对100名女生测定血清总蛋白含量(g/L), 数据如下:
+```{r echo=FALSE, results='hide'}
+  girls <- scan("exec0301.data")
+  data_outline<-function(x){
+    n<-length(x)     # 样本数
+    m<-mean(x)       # 均值
+    v<-var(x)        # 方差
+    s<-sd(x)         # 标准差
+    me<-median(x)    # 中位数
+    cv<-100*s/m      # 样本的变异系数
+    css<-sum((x-m)^2)# 样本校正平方和
+    uss<-sum(x^2)    # 样本未校正平方和
+    R <- max(x)-min(x)#样本极差
+    R1 <-quantile(x,3/4)-quantile(x,1/4) #样本半极差
+    sm <-s/sqrt(n-1)   # 样本的标准误
+    g1 <-n/((n-1)*(n-2))*sum((x-m)^3)/s^3 #Skewness 样本峰度系数
+    g2 <-((n*(n+1))/((n-1)*(n-2)*(n-3))*sum((x-m)^4)/s^4-(3*(n-1)^2)/((n-2)*(n-3))) #Kurtosis 样本偏度系数
+    data.frame(均值Mean=m,方差Var=v,标准差std_dev=s,极差R=R,标准误std_mean=sm,变异系数CV=cv,偏度系数Kurtosis=g2, 峰度系数Skewness=g1,row.names=1)
+
+}
+```
+#### 计算均值、方差、标准差、极差、标准误、变异系数、偏度、峰度.
+```{r echo=2:2}
+options(width=120)
+data_outline(girls)
+```
+
+### 3.2 
+#### 绘出3.1的直方图、密度估计曲线、经验分布图、QQ图,
+```{r echo=-1, warning=FALSE}
+par(family='STHeiti')
+hist(girls,freq=FALSE,col="white",border="red",main="100名女生测定血清总蛋白含量直方图",xlab="年龄",ylab="密度")
+qqnorm(girls,col="purple") #绘制QQ图
+qqline(girls,col="red") #绘制QQ直线
+```
+#### 并将密度估计曲线和正态密度曲线比较
+```{r echo=-1, warning=FALSE}
+par(family='STHeiti')
+plot(density(girls),col="blue", main="100名女生测定血清总蛋白含量密度估计曲线和正态密度曲线") #密度估计曲线
+x<-64:85
+lines(x,dnorm(x,mean(girls),sd(girls)),col="green") #正态分布的概率密度曲线
+legend(80,0.1, # places a legend at the appropriate place 
+       c("密度估计曲线","正态分布的\n概率密度曲线"), # puts text in the legend
+       lty=c(1,1), # gives the legend appropriate symbols (lines)
+       lwd=c(1,1),col=c("blue","green")) # gives the legend lines        
+```
+#### 将经验分布曲线与正态分布曲线相比较
+```{r}
+plot(ecdf(girls),verticals=TRUE,do.p=TRUE) #绘制经验分布图
+lines(x,pnorm(x,mean(girls),sd(girls)),col="blue") #正态经验分布
+```
+### 3.3
+#### 绘出3.1的茎叶图、箱线图,并计算五数总括.
+*茎叶图*
+```{r}
+stem(girls)
+```
+*箱线图*
+```{r}
+boxplot(girls)
+```
+*五数总括*
+```{r}
+fivenum(girls)
+```
+
+
+### 3.4
+分别用W检验方法和Kolmogorov-Smirnov检验方法检验习题3.1的数据是否服从正态分布.
+
+#### W检验方法
+```{r}
+result <- shapiro.test(girls)
+if(result$p.value>=0.05){
+  cat("服从正态分布")
+}
+```
+
+#### Kolmogorov-Smirnov检验方法
+```{r}
+result <- ks.test(girls,"pnorm", mean(girls),sd(girls)) #注意，这里的警告信息，是因为数据中有重复的数值，ks检验要求待检数据时连续的，不允许重复值。
+if(result$p.value>=0.05){
+  cat("服从正态分布")
+}
+```
+
+### 3.9
+用Pearson相关校验法检验习题3.7中的身高与体重是否相关.
+```{r echo=FALSE, warning=FALSE}
+  students<-read.table("students.data", header=T)
+  attach(students)
+  result <- cor.test(体重,身高, method="pearson")
+  result
+  if(result$p.value<0.05)
+    cat("体重~身高相关")
+```
+
+
+
+
+
+
