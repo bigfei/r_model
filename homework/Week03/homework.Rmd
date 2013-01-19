@@ -55,15 +55,15 @@ lines(x,pnorm(x,mean(girls),sd(girls)),col="blue") #正态经验分布
 ```
 ### 3.3
 #### 绘出3.1的茎叶图、箱线图,并计算五数总括.
-*茎叶图*
+**茎叶图**
 ```{r}
 stem(girls)
 ```
-*箱线图*
+**箱线图**
 ```{r}
 boxplot(girls)
 ```
-*五数总括*
+**五数总括**
 ```{r}
 fivenum(girls)
 ```
@@ -99,8 +99,38 @@ if(result$p.value>=0.05){
     cat("体重~身高相关")
 ```
 
+### 6.1 
+为估计山上积雪融化后对下游灌溉的影响,在山上简历一个观测站,测量最大积雪深度$X$和当年灌溉面积$Y$,测得连续10年的数据如表6.17所示.
+```{r echo=FALSE}
+snow_irrigation=data.frame(
+  snow <-  c(5.1, 3.5, 7.1, 6.2, 8.8, 7.8, 4.5, 5.6, 8.0, 6.4),
+  irrigation <- c(1907, 1287, 2700, 2373, 3260, 3000, 1947, 2273, 3113,2493)
+  ) 
+```
+#### (1)试画出相应的散点图,判断$Y$与$X$是否有线性关系
+```{r echo=-1, warning=FALSE}
+par(family='STHeiti')
+plot(snow_irrigation, xlab="最大积雪深度", ylab="当年灌溉面积")
+```
+**从图中判断, $Y$与$X$是有线性关系**
 
+#### (2) 求出$Y$关于$X$的一元线性回归方程
+```{r}
+lm.sol <- lm(snow_irrigation$irrigation~1 + snow_irrigation$snow)
+```
 
+**回归方程为$Y=`r (lm.sol$coefficients[1])`+`r (lm.sol$coefficients[2])`X$**
 
-
-
+#### (3) 对方程做显著性检验
+```{r}
+summary(lm.sol)
+```
+$\beta1$项很显著，但常数项$\beta0$不显著。
+回归方程很显著。
+#### (4) 现测得今年的数据是$X=7m$, 给出今年灌溉面积的预测值和相应的区间估计($\alpha=0.05$)
+```{r}
+lm.sol <- lm(irrigation~1 + snow, data=snow_irrigation)
+new <- data.frame(snow=c(7))
+lm.pred<-predict(lm.sol,new,interval="prediction",level=0.05)
+```
+**今年灌溉面积的预测值$Y$和预测区间为$\overset{_{\verb|^|}}Y(7)=`r lm.pred[1]`, [`r lm.pred[2]`,`r lm.pred[3]`]$**

@@ -59,7 +59,7 @@ lines(x, pnorm(x, mean(girls), sd(girls)), col = "blue")  #正态经验分布
 
 ### 3.3
 #### 绘出3.1的茎叶图、箱线图,并计算五数总括.
-*茎叶图*
+**茎叶图**
 
 ```r
 stem(girls)
@@ -82,7 +82,7 @@ stem(girls)
 ##   84 | 3
 ```
 
-*箱线图*
+**箱线图**
 
 ```r
 boxplot(girls)
@@ -90,7 +90,7 @@ boxplot(girls)
 
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
-*五数总括*
+**五数总括**
 
 ```r
 fivenum(girls)
@@ -162,6 +162,64 @@ if (result$p.value >= 0.05) {
 ```
 
 
+### 6.1 
+为估计山上积雪融化后对下游灌溉的影响,在山上简历一个观测站,测量最大积雪深度$X$和当年灌溉面积$Y$,测得连续10年的数据如表6.17所示.
 
 
+#### (1)试画出相应的散点图,判断$Y$与$X$是否有线性关系
 
+```r
+plot(snow_irrigation, xlab = "最大积雪深度", ylab = "当年灌溉面积")
+```
+
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
+
+**从图中判断, $Y$与$X$是有线性关系**
+
+#### (2) 求出$Y$关于$X$的一元线性回归方程
+
+```r
+lm.sol <- lm(snow_irrigation$irrigation ~ 1 + snow_irrigation$snow)
+```
+
+
+**回归方程为$Y=140.9536+364.182X$**
+
+#### (3) 对方程做显著性检验
+
+```r
+summary(lm.sol)
+```
+
+```
+## 
+## Call:
+## lm(formula = snow_irrigation$irrigation ~ 1 + snow_irrigation$snow)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -128.59  -70.98   -3.73   49.26  167.23 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)             141.0      125.1    1.13     0.29    
+## snow_irrigation$snow    364.2       19.3   18.91  6.3e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## Residual standard error: 96.4 on 8 degrees of freedom
+## Multiple R-squared: 0.978,	Adjusted R-squared: 0.975 
+## F-statistic:  358 on 1 and 8 DF,  p-value: 6.33e-08
+```
+
+$\beta1$项很显著，但常数项$\beta0$不显著。
+回归方程很显著。
+#### (4) 现测得今年的数据是$X=7m$, 给出今年灌溉面积的预测值和相应的区间估计($\alpha=0.05$)
+
+```r
+lm.sol <- lm(irrigation ~ 1 + snow, data = snow_irrigation)
+new <- data.frame(snow = c(7))
+lm.pred <- predict(lm.sol, new, interval = "prediction", level = 0.05)
+```
+
+**今年灌溉面积的预测值$Y$和预测区间为$\overset{_{\verb|^|}}Y(7)=2690.2274, [2683.6267,2696.8281]$**
