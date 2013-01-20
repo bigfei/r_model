@@ -130,6 +130,19 @@ result <- ks.test(girls, "pnorm", mean(girls), sd(girls))  #注意，这里的�
 ```
 
 ```r
+result
+```
+
+```
+## 
+## 	One-sample Kolmogorov-Smirnov test
+## 
+## data:  girls 
+## D = 0.073, p-value = 0.6611
+## alternative hypothesis: two-sided
+```
+
+```r
 if (result$p.value >= 0.05) {
     cat("服从正态分布")
 }
@@ -143,6 +156,13 @@ if (result$p.value >= 0.05) {
 ### 3.9
 用Pearson相关校验法检验习题3.7中的身高与体重是否相关.
 
+```r
+students <- read.table("students.data", header = T)
+attach(students)
+result <- cor.test(体重, 身高, method = "pearson")
+result
+```
+
 ```
 ## 
 ## 	Pearson's product-moment correlation
@@ -155,6 +175,10 @@ if (result$p.value >= 0.05) {
 ## sample estimates:
 ##    cor 
 ## 0.8778
+```
+
+```r
+if (result$p.value < 0.05) cat("体重~身高相关")
 ```
 
 ```

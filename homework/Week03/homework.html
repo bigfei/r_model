@@ -299,6 +299,17 @@ if (result$p.value &gt;= 0.05) {
 <pre><code>## Warning: ties should not be present for the Kolmogorov-Smirnov test
 </code></pre>
 
+<pre><code class="r">result
+</code></pre>
+
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  girls 
+## D = 0.073, p-value = 0.6611
+## alternative hypothesis: two-sided
+</code></pre>
+
 <pre><code class="r">if (result$p.value &gt;= 0.05) {
     cat(&quot;服从正态分布&quot;)
 }
@@ -311,6 +322,12 @@ if (result$p.value &gt;= 0.05) {
 
 <p>用Pearson相关校验法检验习题3.7中的身高与体重是否相关.</p>
 
+<pre><code class="r">students &lt;- read.table(&quot;students.data&quot;, header = T)
+attach(students)
+result &lt;- cor.test(体重, 身高, method = &quot;pearson&quot;)
+result
+</code></pre>
+
 <pre><code>## 
 ##  Pearson&#39;s product-moment correlation
 ## 
@@ -322,6 +339,9 @@ if (result$p.value &gt;= 0.05) {
 ## sample estimates:
 ##    cor 
 ## 0.8778
+</code></pre>
+
+<pre><code class="r">if (result$p.value &lt; 0.05) cat(&quot;体重~身高相关&quot;)
 </code></pre>
 
 <pre><code>## 体重~身高相关

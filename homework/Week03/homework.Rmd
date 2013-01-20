@@ -83,6 +83,7 @@ if(result$p.value>=0.05){
 #### Kolmogorov-Smirnov检验方法
 ```{r}
 result <- ks.test(girls,"pnorm", mean(girls),sd(girls)) #注意，这里的警告信息，是因为数据中有重复的数值，ks检验要求待检数据时连续的，不允许重复值。
+result
 if(result$p.value>=0.05){
   cat("服从正态分布")
 }
@@ -90,7 +91,7 @@ if(result$p.value>=0.05){
 
 ### 3.9
 用Pearson相关校验法检验习题3.7中的身高与体重是否相关.
-```{r echo=FALSE, warning=FALSE}
+```{r warning=FALSE}
   students<-read.table("students.data", header=T)
   attach(students)
   result <- cor.test(体重,身高, method="pearson")
