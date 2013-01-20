@@ -43,8 +43,8 @@ par(family='STHeiti')
 plot(density(girls),col="blue", main="100名女生测定血清总蛋白含量密度估计曲线和正态密度曲线") #密度估计曲线
 x<-64:85
 lines(x,dnorm(x,mean(girls),sd(girls)),col="green") #正态分布的概率密度曲线
-legend(80,0.1, # places a legend at the appropriate place 
-       c("密度估计曲线","正态分布的\n概率密度曲线"), # puts text in the legend
+legend("topright", # places a legend at the appropriate place 
+       c("密度估计曲线","正态分布的概率密度曲线"), # puts text in the legend
        lty=c(1,1), # gives the legend appropriate symbols (lines)
        lwd=c(1,1),col=c("blue","green")) # gives the legend lines        
 ```
