@@ -1,4 +1,5 @@
 *.mp4
+homework/*/*.md
 
 # History files
 .Rhistory
