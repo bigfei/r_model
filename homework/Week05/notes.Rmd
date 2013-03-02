@@ -1,0 +1,110 @@
+## 课堂笔记
+
+### 函数介绍
+
+1. plot函数
+```{r}
+plot(cars$dist~cars$speed, # y~x
+main="Relationship between car distance & speed", # 画标题 xlab="Speed (miles per hour)", #X坐标轴标题
+ylab="Distance travelled (miles)", #Y坐标轴标题
+xlim=c(0,30), #设置X轴范围为从0到30
+ylim=c(0,140), #设置Y轴范围为从0到140
+xaxs="i", #设置X轴风格internal
+yaxs="i", #设置Y轴风格internal
+col="red", #设置“散点”的颜色为红色
+pch=19) #设置散点的形状为实心圆点
+```
+
+```{r}
+sales<-read.csv("data/dailysales.csv", header=TRUE)
+plot(sales$units~as.Date(sales$date,"%d/%m/%y"), type="l", #指定散点图类型为“l”表示画线图
+     main="Unit Sales in the month of January 2010", xlab="Date", ylab="Number of units sold",col="blue")
+```
+
+2. lines 函数
+```{r}
+lines(sales$units~as.Date(sales$date,"%d/%m/%y"),col="red")
+```
+* 高水平作图函数:可以独立绘图,例如plot()
+* 低水平作图函数:必须先运行高水平作图函数绘图,然后再加画在已有的图上面
+
+3. barplot柱形图函数
+```{r}
+sales<-read.csv("data/citysales.csv",header=TRUE) 
+barplot(sales$ProductA,names.arg= sales$City,col="black")
+barplot(sales$ProductA,names.arg=sales$City,horiz=TRUE,col="black")
+```
+Besides = TRUE/FALSE
+```{r}
+barplot(as.matrix(sales[,2:4]), beside=TRUE, legend=sales$City, col=heat.colors(5), border="white")
+barplot(as.matrix(sales[,2:4]), beside=FALSE, legend=sales$City, col=heat.colors(5), border="white")
+```
+
+4. 直方图
+hist()
+
+5. 热力图
+```{r}
+heatmap(as.matrix(mtcars), Rowv=NA,
+Colv=NA,
+col = heat.colors(256), scale="column", margins=c(2,8),
+main = "Car characteristics by Model")
+```
+
+6. par函数
+  * par(mfrow=c(2,3))
+```{r}
+par(mfrow=c(3,2))
+plot(rnorm(100),col="blue",main="Plot No.1") 
+plot(rnorm(100),col="blue",main="Plot No.2") 
+plot(rnorm(100),col="green",main="Plot No.3") 
+plot(rnorm(100),col="black",main="Plot No.4") 
+plot(rnorm(100),col="green",main="Plot No.5") 
+plot(rnorm(100),col="orange",main="Plot No.6")
+```
+ * 多行并列
+
+```{r}
+market<-read.csv("data/dailymarket.csv",header=TRUE) 
+par(mfrow=c(3,1))
+plot(market$revenue~as.Date(market$date,"%d/%m/%y"), type="l", #Specify type of plot as l for line main="Revenue",
+xlab="Date",
+ylab="US Dollars",
+col="blue") 
+plot(market$profits~as.Date(market$date,"%d/%m/%y"), type="l", #Specify type of plot as l for line
+main="Profits",
+xlab="Date",
+ylab="US Dollars",
+col="red") 
+plot(market$customers~as.Date(market$date,"%d/%m/%y"), type="l", #Specify type of plot as l for line
+main="Customer visits",
+xlab="Date",
+ylab="Number of people",
+col="black")
+```
+ * 增加图例
+```{r}
+rain<-read.csv("data/cityrain.csv",header=TRUE)
+plot(rain$Tokyo,type="l",col="red", ylim=c(0,300),
+main="Monthly Rainfall in major cities", xlab="Month of Year",
+ylab="Rainfall (mm)",
+lwd=2) 
+lines(rain$Tokyo,type="l",col="red",lwd=2)
+lines(rain$NewYork,type="l",col="blue",lwd=2) 
+lines(rain$London,type="l",col="green",lwd=2) 
+lines(rain$Berlin,type="l",col="orange",lwd=2)
+legend("topright", legend=c("Tokyo","NewYork","London","Berlin"), col=c("red","blue","green","orange"), lty=1,lwd=2)
+legend("top", legend=c("Tokyo","NewYork","London","Berlin"), ncol=4,
+cex=0.8,
+bty="n",
+col=c("red","blue","green","orange"), lty=1,lwd=2)
+```
+7. 使用多颜色画图
+```{r}
+sales<- read.csv("data/citysales.csv",header=TRUE)
+barplot(as.matrix(sales[,2:4]), beside=T, legend=sales$City, col=c("red","blue","green","orange","pink"), border="white")
+```
+循环颜色, 使用小于样本数的颜色数
+```{r}
+barplot(as.matrix(sales[,2:4]), beside=T, legend=sales$City, col=c("red","blue","green","orange"), border="white")
+```
